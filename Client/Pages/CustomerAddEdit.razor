@@ -1,0 +1,86 @@
+﻿@page "/customeraddedit"
+@page "/customeraddedit/{CustomerId}"
+
+@if(!Saved)
+{
+    <section>
+        <h1>Details for @Customer.FirstName @Customer.LastName </h1>
+        <EditForm Model="@Customer"
+              OnInvalidSubmit="HandleInvalidSubmit"
+              OnValidSubmit="SaveValidSubmit">
+            <DataAnnotationsValidator />
+            <ValidationSummary>
+            </ValidationSummary>
+            <div class="row mb-3">
+                <label for="firstName" class="col-form-label col-md-3">First name: </label>
+                <div class="col-md-8">
+                    <InputText id="firstName" class="form-control col-md-8" 
+                    @bind-Value="@Customer.FirstName" 
+                    placeholder="Enter first name"></InputText>
+                </div>
+                <ValidationMessage class="offset-md-3 col-md-8" 
+                For="@(() => Customer.FirstName)" />
+            </div>
+            <div class="row mb-3">
+                <label for="lastName" class="col-form-label col-md-3">Last name: </label>
+                <div class="col-md-8">
+                    <InputText id="lastName" class="form-control col-md-8"
+                               @bind-Value="@Customer.LastName"
+                               placeholder="Enter last name"></InputText>
+                </div>
+                <ValidationMessage class="offset-md-3 col-md-8"
+                                   For="@(() => Customer.LastName)" />
+            </div>
+            <div class="row mb-3">
+                <label for="email" class="col-form-label col-md-3">Email: </label>
+                <div class="col-md-8">
+                    <InputText id="email" class="form-control col-md-8" 
+                    @bind-Value="@Customer.Email" placeholder="Enter email">
+                </InputText>
+                    <ValidationMessage class="offset-md-3 col-md-8" 
+                    For="@(() => Customer.Email)" />
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="birthdate" class="col-form-label col-md-3">Birthdate: </label>
+                <div class="col-md-8">
+                    <InputDate id="birthdate" class="form-control col-md-8" 
+                    @bind-Value="@Customer.BirthDate" 
+                    placeholder="Enter birthdate"></InputDate>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="country" class="col-form-label col-md-3">Country: </label>
+                <div class="col-md-8">
+                    <InputSelect id="country" class="form-select col-md-8" @bind-Value="@Customer.CountryId">
+                        @foreach (var country in Countries)
+                        {
+                            <option value="@country.CountryId">@country.Name</option>
+                        }
+                    </InputSelect>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary me-1">Save Customer</button>
+            @if(Customer.CustomerId > 0)
+            {
+                <button type="button" class="btn btn-danger my-1" 
+                @onclick="@DeleteCustomer">
+                    Delete
+                </button>
+            }
+            <button type="button" class="btn btn-outline-primary"
+                @onclick="@NavigateToCustomerList">
+                Back to Customer List
+            </button>
+        </EditForm>
+    </section>
+}
+else
+{
+    <div>@Message</div>
+    <button type="button" class="btn btn-outline-primary" 
+    @onclick="@NavigateToCustomerList">
+    Back to Customer List
+    </button>
+}
